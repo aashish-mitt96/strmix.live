@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import logo from "../assets/logo.png";
 import { axiosInstance } from "../lib/axios.js";
@@ -22,6 +23,11 @@ const getOutgoingFriendReqs = async () => {
 
 const sendFriendRequest = async (userId) => {
   const response = await axiosInstance.post(`/users/friend-request/${userId}`);
+  return response.data;
+};
+
+const logout = async () => {
+  const response = await axiosInstance.post("/auth/logout");
   return response.data;
 };
 
@@ -91,7 +97,7 @@ const FriendCard = ({ friend }) => (
             </div>
           </div>
         </div>
-      </div>  
+      </div>
 
       <Link
         to={`/chat/${friend._id}`}
@@ -192,6 +198,17 @@ const HomePage = () => {
     }
   }, [outgoingFriendReqs]);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully!");
+      navigate("/login"); // redirect after logout
+    } catch (err) {
+      console.error("Logout failed:", err);
+      toast.error("Logout failed. Try again.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 relative overflow-hidden">
       {/* Animated background elements */}
@@ -233,14 +250,23 @@ const HomePage = () => {
                   </p>
                 </div>
               </div>
-              <Link
-                to="/notifications"
-                className="group relative bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 px-6 py-3 rounded-2xl font-semibold hover:from-cyan-400/30 hover:to-blue-400/30 hover:border-cyan-300/50 transition-all duration-300 shadow-lg hover:shadow-cyan-500/20"
-              >
-                <span className="text-lg mr-2">🔔</span>
-                <span>Notifications</span>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link
+                  to="/notifications"
+                  className="group relative bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 px-6 py-3 rounded-2xl font-semibold hover:from-cyan-400/30 hover:to-blue-400/30 hover:border-cyan-300/50 transition-all duration-300 shadow-lg hover:shadow-cyan-500/20"
+                >
+                  <span className="text-lg mr-2">🔔</span>
+                  <span>Notifications</span>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="group relative bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border border-red-400/30 text-red-300 px-6 py-3 rounded-2xl font-semibold hover:from-red-400/30 hover:to-pink-400/30 hover:border-red-300/50 transition-all duration-300 shadow-lg hover:shadow-red-500/20"
+                >
+                  <span className="text-lg mr-2">🗝️</span>
+                  <span>Logout</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ import { Chat, Channel, MessageInput, MessageList, Thread, Window } from "stream
 import logo from "../assets/logo.png"
 import { axiosInstance } from "../lib/axios.js"
 import ChatLoader from "../components/ChatLoader.jsx"
-import WelcomeMessage from "../components/WelcomeMessahe.jsx"
+import WelcomeMessage from "../components/WelcomeMessage.jsx"
 
 
 // Fetch the authenticated user's data from the backend.
@@ -227,5 +227,6 @@ const ChatPage = () => {
     </div>
   )
 }
+
 
 export default ChatPage
