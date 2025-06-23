@@ -177,7 +177,6 @@ const ChatPage = () => {
 
       {/* Right Side Content */}
       <div className="flex-1 flex flex-col bg-slate-800/20 backdrop-blur-sm relative z-10 ">
-       <div className="px-2 py-2 sm:px-4 md:px-6 lg:px-8 flex-1 flex flex-col">
         {/* Header */}
         <div className="bg-slate-800/30 backdrop-blur-xl border-b border-white/10 px-6 py-2 shadow-lg">
           <div className="flex items-center justify-between">
@@ -224,7 +223,6 @@ const ChatPage = () => {
       {/* Custom Styles */}
       <style> {` .scrollbar-none { -ms-overflow-style: none;  scrollbar-width: none}`} </style>
      </div>
-    </div>
   )
 }
 
