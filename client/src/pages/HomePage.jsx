@@ -1,214 +1,95 @@
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+// External Modules & Dependencies.
+import toast from "react-hot-toast"
+import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import logo from "../assets/logo.png";
-import { axiosInstance } from "../lib/axios.js";
 
+// Internal Modules: Assets, API, Components.
+import logo from "../assets/logo.png"
+import { axiosInstance } from "../lib/axios.js"
+import FriendCard from "../components/FriendCard.jsx"
+import RecommendedCard from "../components/RecommendedCard.jsx"
+
+
+// API Fuctions.
 const getUserFriends = async () => {
-  const response = await axiosInstance.get("/users/friends");
-  return response.data;
-};
-
+  const response = await axiosInstance.get("/users/friends")
+  return response.data
+}
 const getRecommendedUsers = async () => {
-  const response = await axiosInstance.get("/users");
-  return response.data;
-};
-
+  const response = await axiosInstance.get("/users")
+  return response.data
+}
 const getOutgoingFriendReqs = async () => {
-  const response = await axiosInstance.get("/users/outgoing-friend-requests");
-  return response.data;
-};
-
+  const response = await axiosInstance.get("/users/outgoing-friend-requests")
+  return response.data
+}
 const sendFriendRequest = async (userId) => {
-  const response = await axiosInstance.post(`/users/friend-request/${userId}`);
-  return response.data;
-};
-
+  const response = await axiosInstance.post(`/users/friend-request/${userId}`)
+  return response.data
+}
 const logout = async () => {
-  const response = await axiosInstance.post("/auth/logout");
-  return response.data;
-};
+  const response = await axiosInstance.post("/auth/logout")
+  return response.data
+}
 
-const LANGUAGE_TO_FLAG = {
-  english: "gb",
-  spanish: "es",
-  french: "fr",
-  german: "de",
-  mandarin: "cn",
-  japanese: "jp",
-  korean: "kr",
-  hindi: "in",
-  russian: "ru",
-  portuguese: "pt",
-  arabic: "sa",
-  italian: "it",
-  turkish: "tr",
-  dutch: "nl",
-};
 
-const getLanguageFlag = (language) => {
-  if (!language) return null;
-  const countryCode = LANGUAGE_TO_FLAG[language.toLowerCase()];
-  return countryCode ? (
-    <img
-      src={`https://flagcdn.com/24x18/${countryCode}.png`}
-      alt={`${language} flag`}
-      className="h-4 w-5 mr-2 inline-block rounded-sm shadow-sm"
-    />
-  ) : null;
-};
-
-const FriendCard = ({ friend }) => (
-  <div className="group relative rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl border border-cyan-300/30 p-6 shadow-2xl transition-all duration-500 hover:scale-105 hover:shadow-cyan-500/20 hover:border-cyan-400/50 overflow-hidden">
-    {/* Animated gradient overlay */}
-    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-    {/* Status indicator */}
-    <div className="absolute top-4 right-4 w-3 h-3 bg-green-400 rounded-full shadow-lg animate-pulse" />
-
-    <div className="relative z-10">
-      <div className="flex items-center gap-5 mb-4">
-        <div className="relative">
-          <img
-            src={friend.profilePic}
-            alt={friend.fullName}
-            className="w-16 h-16  duration-300"
-          />
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-white  font-bold text-xl tracking-wide truncate mb-2 group-hover:text-cyan-100 transition-colors">
-            {friend.fullName}
-          </h3>
-          <div className="space-y-1">
-            <div className="flex items-center text-sm text-cyan-100/90 bg-cyan-500/10 rounded-lg px-3 py-1.5 backdrop-blur-sm">
-              {getLanguageFlag(friend.nativeLanguage)}
-              <span className="font-medium">
-                Native: {friend.nativeLanguage}
-              </span>
-            </div>
-            <div className="flex items-center text-sm text-blue-100/90 bg-blue-500/10 rounded-lg px-3 py-1.5 backdrop-blur-sm">
-              {getLanguageFlag(friend.learningLanguage)}
-              <span className="font-medium">
-                Learning: {friend.learningLanguage}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Link
-        to={`/chat/${friend._id}`}
-        className="block w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/30 text-center group/btn"
-      >
-        <span className="group-hover/btn:scale-110 inline-block transition-transform duration-200">
-          💬 Start Video Chat
-        </span>
-      </Link>
-    </div>
-  </div>
-);
-
-const RecommendedCard = ({ user, isRequested, sendRequest }) => (
-  <div className="group relative rounded-2xl bg-gradient-to-br from-white/12 to-white/4 backdrop-blur-xl border border-indigo-300/25 p-6 shadow-2xl transition-all duration-500 hover:scale-105 hover:shadow-indigo-500/20 hover:border-indigo-400/50 overflow-hidden">
-    {/* Animated gradient overlay */}
-    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-    {/* Sparkle effect */}
-    <div className="absolute top-4 right-4 text-indigo-300 opacity-60 group-hover:opacity-100 transition-opacity">
-      ✨
-    </div>
-
-    <div className="relative z-10">
-      <div className="flex items-center gap-5 mb-4">
-        <div className="relative">
-          <img
-            src={user.profilePic}
-            alt={user.fullName}
-            className="w-16 h-16 duration-300"
-          />
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-white font-bold text-xl tracking-wide truncate mb-2 group-hover:text-indigo-100 transition-colors">
-            {user.fullName}
-          </h3>
-          <div className="space-y-1">
-            <div className="flex items-center text-sm text-indigo-100/90 bg-indigo-500/10 rounded-lg px-3 py-1.5 backdrop-blur-sm">
-              {getLanguageFlag(user.nativeLanguage)}
-              <span className="font-medium">Native: {user.nativeLanguage}</span>
-            </div>
-            <div className="flex items-center text-sm text-purple-100/90 bg-purple-500/10 rounded-lg px-3 py-1.5 backdrop-blur-sm">
-              {getLanguageFlag(user.learningLanguage)}
-              <span className="font-medium">
-                Learning: {user.learningLanguage}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <button
-        onClick={() => sendRequest(user._id)}
-        className={`w-full font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform shadow-lg text-center ${
-          isRequested
-            ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white cursor-not-allowed opacity-75"
-            : "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white hover:scale-105 hover:shadow-indigo-500/30"
-        }`}
-        disabled={isRequested}
-      >
-        {isRequested ? "✓ Request Sent" : "➕ Add Friend"}
-      </button>
-    </div>
-  </div>
-);
-
+// Main Component.
 const HomePage = () => {
-  const queryClient = useQueryClient();
-  const [tab, setTab] = useState("friends");
-  const [outgoingRequestsIds, setOutgoingRequestsIds] = useState(new Set());
 
-  const { data: friends = [], isLoading: loadingFriends } = useQuery({
-    queryKey: ["friends"],
-    queryFn: getUserFriends,
-  });
 
-  const { data: recommendedUsers = [], isLoading: loadingUsers } = useQuery({
-    queryKey: ["users"],
-    queryFn: getRecommendedUsers,
-  });
+  // Access the global query client.
+  const queryClient = useQueryClient()
 
-  const { data: outgoingFriendReqs } = useQuery({
-    queryKey: ["outgoingFriendReqs"],
-    queryFn: getOutgoingFriendReqs,
-  });
 
+  // React state variables.
+  const [tab, setTab] = useState("friends")
+  const [outgoingRequestsIds, setOutgoingRequestsIds] = useState(new Set())
+
+
+  // Fetch the current user's friends list.
+  const { data: friends = [], isLoading: loadingFriends } = useQuery({ queryKey: ["friends"], queryFn: getUserFriends })
+
+
+  // Fetch the list of recommended users.
+  const { data: recommendedUsers = [], isLoading: loadingUsers } = useQuery({ queryKey: ["users"], queryFn: getRecommendedUsers})
+
+
+  // Fetch the list of outgoing friend requests sent by the user.
+  const { data: outgoingFriendReqs } = useQuery({ queryKey: ["outgoingFriendReqs"], queryFn: getOutgoingFriendReqs })
+
+
+  // Mutation for sending a friend request.
   const { mutate: sendRequestMutation } = useMutation({
     mutationFn: sendFriendRequest,
-    onSuccess: () => queryClient.invalidateQueries(["outgoingFriendReqs"]),
-  });
+    onSuccess: () => queryClient.invalidateQueries(["outgoingFriendReqs"])
+  })
 
+
+  // Update local state with IDs of users who have pending outgoing friend requests.
   useEffect(() => {
-    const ids = new Set();
+    const ids = new Set()
     if (outgoingFriendReqs?.length > 0) {
-      outgoingFriendReqs.forEach((req) => ids.add(req.recipient._id));
-      setOutgoingRequestsIds(ids);
+      outgoingFriendReqs.forEach((req) => ids.add(req.recipient._id))
+      setOutgoingRequestsIds(ids)
     }
-  }, [outgoingFriendReqs]);
+  }, [outgoingFriendReqs])
 
+
+  // Handle user Logout.
   const handleLogout = async () => {
     try {
-      await logout();
-      toast.success("Logged out successfully!");
-      navigate("/login"); // redirect after logout
+      await logout()
+      toast.success("Logged out successfully!")
+      navigate("/login")
     } catch (err) {
-      console.error("Logout failed:", err);
-      toast.error("Logout failed. Try again.");
+      console.error("Logout failed:", err)
+      toast.error("Logout failed. Try again.")
     }
-  };
+  }
 
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 relative overflow-hidden">
       {/* Animated background elements */}
@@ -378,39 +259,8 @@ const HomePage = () => {
           )}
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-20px) rotate(180deg);
-          }
-        }
-
-        .animate-fadeInUp {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

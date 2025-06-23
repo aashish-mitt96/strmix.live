@@ -1,48 +1,62 @@
-import { useState } from "react";
-import { Loader2, RefreshCcw } from "lucide-react";
-import toast from "react-hot-toast";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// External Modules & Dependencies.
+import { useState } from "react"
+import toast from "react-hot-toast"
+import { Loader2, RefreshCcw } from "lucide-react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import logo from "../assets/logo.png";
-import { axiosInstance } from "../lib/axios.js";
 
-// API Functions
+// Internal Modules: Assets, API, Components.
+import logo from "../assets/logo.png"
+import { axiosInstance } from "../lib/axios.js"
+
+
+// Fetch the authenticated user's data from the backend.
 const getAuthUser = async () => {
   try {
-    const res = await axiosInstance.get("/auth/me");
-    return res.data;
+    const res = await axiosInstance.get("/auth/me")
+    return res.data
   } catch (error) {
-    console.error("Error in getAuthUser:", error);
-    return null;
+    console.error("Error in getAuthUser:", error)
+    return null
   }
-};
+}
 
-const completeOnboarding = async (userData) => {
-  const response = await axiosInstance.post("/auth/onboarding", userData);
-  return response.data;
-};
 
-// Custom Hook
+// Custom hook to use the authenticated user's data in components.
 const useAuthUser = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["authUser"],
-    queryFn: getAuthUser,
-    retry: false,
-  });
-  return { isLoading, authUser: data?.user };
-};
+  const { data, isLoading } = useQuery({ queryKey: ["authUser"], queryFn: getAuthUser, retry: false })
+  return { isLoading, authUser: data?.user }
+}
 
-// Languages
+
+// API Fuction.
+const completeOnboarding = async (userData) => {
+  const response = await axiosInstance.post("/auth/onboarding", userData)
+  return response.data
+}
+
+
+// Supported Languages.
 const LANGUAGES = [
   "English", "Spanish", "French", "German", "Mandarin", "Japanese",
   "Korean", "Hindi", "Russian", "Portuguese", "Arabic", "Italian",
-  "Turkish", "Dutch",
-];
+  "Turkish", "Dutch"
+]
 
+
+// Main Component.
 const OnboardPage = () => {
-  const { authUser } = useAuthUser();
-  const queryClient = useQueryClient();
 
+
+  // Access the global query client.
+  const queryClient = useQueryClient()
+
+
+  // Get the currently authenticated user's data.
+  const { authUser } = useAuthUser()
+
+
+  // Local state for the onboarding form fields, initialized with current user data.
   const [formState, setFormState] = useState({
     fullName: authUser?.fullName || "",
     bio: authUser?.bio || "",
@@ -50,33 +64,42 @@ const OnboardPage = () => {
     learningLanguage: authUser?.learningLanguage || "",
     location: authUser?.location || "",
     profilePic: authUser?.profilePic || "",
-  });
+  })
 
+
+  // Mutation to complete the onboarding process
   const { mutate: onboardingMutation, isPending } = useMutation({
     mutationFn: completeOnboarding,
     onSuccess: () => {
-      toast.success("Onboarding complete!");
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      toast.success("Onboarding complete!")
+      queryClient.invalidateQueries({ queryKey: ["authUser"] })
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Something went wrong.");
-    },
-  });
+      toast.error(error.response?.data?.message || "Something went wrong.")
+    }
+  })
 
+
+  // Handles input changes.
   const handleChange = (e) =>
-    setFormState({ ...formState, [e.target.name]: e.target.value });
+    setFormState({ ...formState, [e.target.name]: e.target.value })
 
+
+  // Handles form Submission.
   const handleSubmit = (e) => {
-    e.preventDefault();
-    onboardingMutation(formState);
-  };
+    e.preventDefault()
+    onboardingMutation(formState)
+  }
 
+
+  // Generates a random avatar.
   const handleRandomAvatar = () => {
-    const idx = Math.floor(Math.random() * 100) + 1;
-    const avatar = `https://avatar.iran.liara.run/public/${idx}.png`;
-    setFormState({ ...formState, profilePic: avatar });
-    toast.success("Random avatar generated!");
-  };
+    const idx = Math.floor(Math.random() * 100) + 1
+    const avatar = `https://avatar.iran.liara.run/public/${idx}.png`
+    setFormState({ ...formState, profilePic: avatar })
+    toast.success("Random avatar generated!")
+  }
+
 
   return (
     <div className="min-h-screen bg-[#0f172a] flex items-center justify-center px-6 py-12 relative overflow-hidden">
@@ -216,7 +239,7 @@ const OnboardPage = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OnboardPage;
+export default OnboardPage

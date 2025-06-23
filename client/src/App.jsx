@@ -1,17 +1,21 @@
-import { Navigate, Route, Routes } from "react-router-dom"
+// External Modules & Dependencies.
 import { Toaster } from "react-hot-toast"
 import { useQuery } from "@tanstack/react-query"
+import { Navigate, Route, Routes } from "react-router-dom"
 
-import { axiosInstance } from "./lib/axios.js"
 
+// Internal Modules: Assets, API, Components.
 import HomePage from "./pages/HomePage.jsx"
-import LoginPage from "./pages/LoginPage.jsx"
-import SignupPage from "./pages/SignupPage.jsx"
-import OnboardPage from "./pages/OnboardPage.jsx"
-import NotificationPage from "./pages/NotificationPage.jsx"
 import ChatPage from "./pages/ChatPage.jsx"
 import CallPage from "./pages/CallPage.jsx"
+import LoginPage from "./pages/LoginPage.jsx"
+import { axiosInstance } from "./lib/axios.js"
+import SignupPage from "./pages/SignupPage.jsx"
+import OnboardPage from "./pages/OnboardPage.jsx"
+import AppLoader from "./components/AppLoader.jsx"
+import NotificationPage from "./pages/NotificationPage.jsx"
 
+// Fetch the authenticated user's data from the backend.
 const getAuthUser = async () => {
   try {
     const res = await axiosInstance.get("/auth/me")
@@ -22,6 +26,8 @@ const getAuthUser = async () => {
   }
 }
 
+
+// Custom hook to use the authenticated user's data in components.
 const useAuthUser = () => {
   const authUser = useQuery({
     queryKey: ["authUser"],
@@ -31,13 +37,17 @@ const useAuthUser = () => {
   return { isLoading: authUser.isLoading, authUser: authUser.data?.user }
 }
 
+
+// Main Component.
 const App = () => {
 
+
+  // Get authenticated user details.
   const { isLoading, authUser } = useAuthUser()
   const isAuthenticated = Boolean(authUser)
   const isOnboarded = authUser?.isOnboarded
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <AppLoader/>
 
   return (
     <div>
@@ -52,7 +62,7 @@ const App = () => {
       </Routes>
       <Toaster />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

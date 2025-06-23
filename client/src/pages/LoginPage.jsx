@@ -1,44 +1,58 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
-import { axiosInstance } from "../lib/axios";
-import logo from "../assets/logo.png"; // adjust path if needed
+// External Modules & Dependencies.
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { Link } from "react-router-dom"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-// API function
+
+// Internal Modules: Assets, API, Components.
+import logo from "../assets/logo.png"
+import { axiosInstance } from "../lib/axios"
+
+
+// API Login Function.
 const login = async (loginData) => {
-  const response = await axiosInstance.post("/auth/login", loginData);
-  return response.data;
-};
+  const response = await axiosInstance.post("/auth/login", loginData)
+  return response.data
+}
 
-// Hook
+
+// React Custom Hook.
 const useLogin = () => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   const { mutate, isPending, error } = useMutation({
     mutationFn: login,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-  });
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] })
+  })
+  return { error, isPending, loginMutation: mutate }
+}
 
-  return { error, isPending, loginMutation: mutate };
-};
 
+// Main Component.
 const LoginPage = () => {
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-  });
 
-  const { isPending, error, loginMutation } = useLogin();
 
+  // To store user input for the login form.
+  const [loginData, setLoginData] = useState({ email: "", password: "" })
+
+
+  // Custom hook to handle login API mutation.
+  const { isPending, error, loginMutation } = useLogin()
+
+
+  // Handles form submission.
   const handleLogin = (e) => {
-    e.preventDefault();
-    loginMutation(loginData);
-  };
+    e.preventDefault()
+    loginMutation(loginData)
+  }
 
+
+  // Handles input changes.
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setLoginData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setLoginData((prev) => ({ ...prev, [name]: value }))
+  }
+
 
   return (
     <div className="min-h-screen bg-[#0f172a] flex items-center justify-center px-4 py-12 relative overflow-hidden">
@@ -107,7 +121,7 @@ const LoginPage = () => {
 
         {/* Footer */}
         <p className="text-center text-sm text-cyan-100 mt-5">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <Link
             to="/signup"
             className="text-cyan-400 hover:underline hover:text-cyan-300"
@@ -117,7 +131,7 @@ const LoginPage = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

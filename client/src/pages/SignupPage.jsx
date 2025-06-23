@@ -1,40 +1,51 @@
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+// External Modules & Dependencies.
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { Link } from "react-router-dom"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import logo from "../assets/logo.png";
-import { axiosInstance } from "../lib/axios.js";
 
-// API Fuction
+// Internal Modules: Assets, API, Components.
+import logo from "../assets/logo.png"
+import { axiosInstance } from "../lib/axios.js"
+
+
+// API Fuction.
 const signup = async (signupData) => {
-  const response = await axiosInstance.post("/auth/signup", signupData);
-  return response.data;
-};
+  const response = await axiosInstance.post("/auth/signup", signupData)
+  return response.data
+}
 
-// Custom Hook
+
+// React Custom Hook.
 const useSignUp = () => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   const { mutate, isPending, error } = useMutation({
     mutationFn: signup,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-  });
-  return { isPending, error, signupMutation: mutate };
-};
+  })
+  return { isPending, error, signupMutation: mutate }
+}
+
 
 // Main Component
 const SignupPage = () => {
-  const [signupData, setSignupData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-  });
-  const { isPending, error, signupMutation } = useSignUp();
 
+
+  // Local state for the signup form field.
+  const [signupData, setSignupData] = useState({ fullName: "", email: "", password: "" })
+
+
+  // Custom hook to handle login API mutation.
+  const { isPending, error, signupMutation } = useSignUp()
+
+
+  // Handles form submission.
   const handleSignup = (e) => {
-    e.preventDefault();
-    signupMutation(signupData);
-  };
+    e.preventDefault()
+    signupMutation(signupData)
+  }
+
 
   // Animation CSS
   if (
@@ -55,6 +66,7 @@ const SignupPage = () => {
   `;
     document.head.appendChild(style);
   }
+
 
   return (
     <div className="min-h-screen bg-[#0f172a] flex items-center justify-center px-4 py-10 relative overflow-hidden">
@@ -189,7 +201,7 @@ const SignupPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SignupPage;
+export default SignupPage
