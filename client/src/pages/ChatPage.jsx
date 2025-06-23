@@ -127,7 +127,7 @@ const ChatPage = () => {
     <div className="h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 relative overflow-hidden flex">
       
      {/* Sidebar */}
-     <div className="w-75 h-screen bg-slate-800/30 backdrop-blur-xl flex flex-col ">
+     <div className="hidden md:flex w-75 h-screen bg-slate-800/30 backdrop-blur-xl flex-col ">
 
         {/* Header Section */}
         <div className="p-6">
@@ -143,7 +143,7 @@ const ChatPage = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex-1 p-4 space-y-2">
+        <div className="hidden md:block flex-1 p-4 space-y-2">
           {[
             { icon: "💬", label: "Chat Feed", active: true },
             { icon: "👥", label: "People Feed" },
@@ -157,7 +157,7 @@ const ChatPage = () => {
         </div>
 
         {/* Footer Section */}
-        <div className="p-4 space-y-3">
+        <div className="hidden md:block p-4 space-y-3">
           <button onClick={handleBack} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-red-400 hover:bg-red-500/10 transition-colors border border-red-400/20">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -177,7 +177,7 @@ const ChatPage = () => {
 
       {/* Right Side Content */}
       <div className="flex-1 flex flex-col bg-slate-800/20 backdrop-blur-sm relative z-10 ">
-
+       <div className="px-2 py-2 sm:px-4 md:px-6 lg:px-8 flex-1 flex flex-col">
         {/* Header */}
         <div className="bg-slate-800/30 backdrop-blur-xl border-b border-white/10 px-6 py-2 shadow-lg">
           <div className="flex items-center justify-between">
@@ -223,6 +223,7 @@ const ChatPage = () => {
 
       {/* Custom Styles */}
       <style> {` .scrollbar-none { -ms-overflow-style: none;  scrollbar-width: none}`} </style>
+     </div>
     </div>
   )
 }
