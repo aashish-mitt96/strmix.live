@@ -85,7 +85,6 @@ const HomePage = () => {
       navigate("/login")
     } catch (err) {
       console.error("Logout failed:", err)
-      toast.error("Logout failed. Try again.")
     }
   }
 

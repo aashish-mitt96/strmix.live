@@ -24,9 +24,9 @@ app.use("/api/users", userRoutes)
 app.use("/api/chat", chatRoutes)
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")))
+  app.use(express.static(path.join(__dirname, "../client/dist")))
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"))
+    res.sendFile(path.join(__dirname, "../client", "dist", "index.html"))
   })
 }
 
