@@ -114,42 +114,47 @@ const HomePage = () => {
 
       <div className="relative z-10 px-2 py-2">
         {/* Enhanced Header */}
-        <div className="sticky top-6 z-50 mb-10">
-          <div className="max-w-7xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl px-6 py-3">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12  flex items-center justify-center">
-                  <img src={logo} alt="logo" />
+        <div className="sticky top-6 z-50 mb-10 px-2">
+          <div className="max-w-7xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl px-4 sm:px-6 py-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+              {/* Left: Logo + Title + Subtitle */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-center sm:text-left">
+                <div className="flex items-center justify-center">
+                  <img src={logo} alt="logo" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
                 </div>
                 <div>
-                  <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-transparent bg-clip-text">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-transparent bg-clip-text">
                     Strmix
                   </h1>
-                  <p className="text-white/70 text-sm font-medium">
+                  <p className="text-white/70 text-sm font-medium leading-tight">
                     Connect • Learn • Chat
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+
+              {/* Right: Buttons */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
                 <Link
                   to="/notifications"
-                  className="group relative bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 px-6 py-3 rounded-2xl font-semibold hover:from-cyan-400/30 hover:to-blue-400/30 hover:border-cyan-300/50 transition-all duration-300 shadow-lg hover:shadow-cyan-500/20"
+                  className="group relative w-full sm:w-auto text-center bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 px-5 py-2 rounded-2xl font-semibold hover:from-cyan-400/30 hover:to-blue-400/30 hover:border-cyan-300/50 transition-all duration-300 shadow-lg hover:shadow-cyan-500/20"
                 >
                   <span className="text-lg mr-2">🔔</span>
-                  <span>Notifications</span>
+                  Notifications
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
                 </Link>
+
                 <button
                   onClick={handleLogout}
-                  className="group relative bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border border-red-400/30 text-red-300 px-6 py-3 rounded-2xl font-semibold hover:from-red-400/30 hover:to-pink-400/30 hover:border-red-300/50 transition-all duration-300 shadow-lg hover:shadow-red-500/20"
+                  className="group relative w-full sm:w-auto text-center bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border border-red-400/30 text-red-300 px-5 py-2 rounded-2xl font-semibold hover:from-red-400/30 hover:to-pink-400/30 hover:border-red-300/50 transition-all duration-300 shadow-lg hover:shadow-red-500/20"
                 >
                   <span className="text-lg mr-2">🗝️</span>
-                  <span>Logout</span>
+                  Logout
                 </button>
               </div>
             </div>
           </div>
         </div>
+
 
         {/* Enhanced Tab Switcher */}
         <div className="max-w-6xl mx-auto mb-10">
