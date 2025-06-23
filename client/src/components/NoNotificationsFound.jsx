@@ -1,3 +1,5 @@
+import { BellIcon } from "lucide-react"
+
 const NoNotificationsFound = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
