@@ -58,7 +58,6 @@ const ChatPage = () => {
   const [loading, setLoading] = useState(true)
   const [chatClient, setChatClient] = useState(null)
   const [targetUser, setTargetUser] = useState(null)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
 
   // Get authenticated user details.
