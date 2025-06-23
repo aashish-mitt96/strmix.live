@@ -55,13 +55,13 @@ const LoginPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center px-4 sm:px-6 md:px-8 py-12 relative overflow-hidden">
       {/* Glows */}
       <div className="absolute -top-40 -left-40 w-[400px] h-[400px] bg-cyan-400 rounded-full blur-[160px] opacity-20" />
       <div className="absolute -bottom-40 -right-40 w-[400px] h-[400px] bg-purple-600 rounded-full blur-[160px] opacity-20" />
 
       {/* Login Box */}
-      <div className="z-10 w-full max-w-md bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl p-8 text-white">
+      <div className="z-10 w-full max-w-md sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl p-8 text-white">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <img src={logo} alt="Logo" className="w-8 h-8 rounded" />
