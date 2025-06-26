@@ -2,7 +2,7 @@
 
 ## 📽️ Preview
 
-![preview_gif](.pre)
+![Preview_gif.gif](.Preview_gif.gif)
 ---
 
 ## 🚀 Features
