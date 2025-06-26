@@ -7,7 +7,7 @@
 
 ## 🚀 Features
 
-- 🎥 Real-time video conferencing using **WebRTC**
+- 🎥 Real-time video conferencing using **getstream.io**
 - 💬 Seamless live chat with **Stream Chat API** integration
 - 🖥️ Screen sharing for collaborative learning
 - 👥 Dynamic multi-user room management
